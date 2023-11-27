@@ -1,7 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
 function InfiniteScrollOnButtonClick() {
+  const { ref, inView } = useInView();
+
   const loadTodos = async ({ pageParam }) => {
     const { data } = await axios.get(
       `https://jsonplaceholder.typicode.com/todos?_page=${pageParam}`
@@ -22,7 +26,13 @@ function InfiniteScrollOnButtonClick() {
       return lastPageData.length ? pageNumber + 1 : null;
     },
   });
-  console.log(hasNextPage);
+
+  useEffect(() => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasNextPage]);
+
   if (status == "pending") {
     return <div>Loading...</div>;
   }
@@ -42,9 +52,7 @@ function InfiniteScrollOnButtonClick() {
   return (
     <div>
       {content}
-      <button disabled={!hasNextPage} onClick={fetchNextPage}>
-        {hasNextPage ? "load more" : "end of the page"}
-      </button>
+      <div style={{ opacity: 0 }} ref={ref}></div>
     </div>
   );
 }
