@@ -1,9 +1,9 @@
-import Tanstack from "./components/Tanstack";
+import InfiniteScrollOnButtonClick from "./components/InfiniteScrollOnButtonClick";
 
 function App() {
   return (
     <div>
-      <Tanstack />
+      <InfiniteScrollOnButtonClick />
     </div>
   );
 }

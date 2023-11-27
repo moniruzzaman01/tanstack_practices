@@ -1,13 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 
-function Tanstack() {
-  //   useEffect(() => {
-  //     loadTodos();
-  //   }, []);
-
+function InfiniteScrollOnButtonClick() {
   const loadTodos = async ({ pageParam }) => {
     const { data } = await axios.get(
       `https://jsonplaceholder.typicode.com/todos?_page=${pageParam}`
@@ -15,17 +9,20 @@ function Tanstack() {
     return data;
   };
 
-  const { data, status, error, fetchNextPage } = useInfiniteQuery({
+  const { data, status, error, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: loadTodos,
     initialPageParam: 1,
-    getNextPageParam: (lastPage, a, b, c) => {
-      console.log(lastPage, a, b, c);
-      return b + 1;
+    getNextPageParam: (
+      lastPageData,
+      allData,
+      pageNumber
+      // arrayOfPageNumber
+    ) => {
+      return lastPageData.length ? pageNumber + 1 : null;
     },
   });
-  // console.log(data, status, error);
-
+  console.log(hasNextPage);
   if (status == "pending") {
     return <div>Loading...</div>;
   }
@@ -45,15 +42,11 @@ function Tanstack() {
   return (
     <div>
       {content}
-      <button onClick={fetchNextPage}>load more</button>
-      {/* <InfiniteScroll
-        dataLength={5} //This is important field to render the next data
-        next={() => loadTodos({ pageParam: 2 })}
-        hasMore={false}
-        loader={<h4>Loading...</h4>}
-      ></InfiniteScroll> */}
+      <button disabled={!hasNextPage} onClick={fetchNextPage}>
+        {hasNextPage ? "load more" : "end of the page"}
+      </button>
     </div>
   );
 }
 
-export default Tanstack;
+export default InfiniteScrollOnButtonClick;
