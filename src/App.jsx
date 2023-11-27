@@ -1,11 +1,5 @@
-import InfiniteScrollOnButtonClick from "./components/InfiniteScrollOnButtonClick";
-
 function App() {
-  return (
-    <div>
-      <InfiniteScrollOnButtonClick />
-    </div>
-  );
+  return <div>Hello</div>;
 }
 
 export default App;
