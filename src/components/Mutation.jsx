@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+import PropTypes from "prop-types";
 
 function Mutation({ posts }) {
   const insertPost = async (data) => {
@@ -44,5 +45,8 @@ function Mutation({ posts }) {
     </div>
   );
 }
+Mutation.propTypes = {
+  posts: PropTypes.object,
+};
 
 export default Mutation;
