@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 function Root() {
   return (
     <div>
-      Hello
+      Hello this is root
       <Outlet />
     </div>
   );
